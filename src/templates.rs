@@ -79,6 +79,8 @@ pub enum TemplateFieldType {
     IfDesc(&'static str, fn(&[u8]) -> FmtReturn),
     ForwardingStatus(&'static str, fn(&[u8]) -> FmtReturn),
     ReplicationFactor(&'static str, fn(&[u8]) -> FmtReturn),
+    droppedPacketTotalCount(&'static str, fn(&[u8]) -> FmtReturn),
+    layer7protocol(&'static str, fn(&[u8]) -> FmtReturn),
     Unimplemented(&'static str, fn(&[u8]) -> FmtReturn),
 }
 
@@ -149,6 +151,9 @@ impl fmt::Display for TemplateFieldType {
             TemplateFieldType::ForwardingStatus(x, _) => x,
             TemplateFieldType::ReplicationFactor(x, _) => x,
 
+            TemplateFieldType::droppedPacketTotalCount(x, _) => x,
+            TemplateFieldType::layer7protocol(x, _) => x,
+
             TemplateFieldType::Unimplemented(x, _) => x,
 
             _ => "Unknown value",
@@ -204,6 +209,10 @@ impl TemplateFieldType {
 
             TemplateFieldType::ForwardingStatus(_, f) => f,
             TemplateFieldType::ReplicationFactor(_, f) => f,
+
+            TemplateFieldType::droppedPacketTotalCount(_, f) => f,
+            TemplateFieldType::layer7protocol(_, f) => f,
+
             TemplateFieldType::MulDstPkts(_, f) => f,
             TemplateFieldType::MulDstBytes(_, f) => f,
             TemplateFieldType::OutBytes(_, f) => f,
@@ -379,7 +388,14 @@ impl From<u16> for TemplateFieldType {
                 "Multicast replication factor",
                 fmt_int,
             ),
-
+            135 => TemplateFieldType::droppedPacketTotalCount(
+                "Dropped Packet Total Count",
+                fmt_int,
+            ),
+            57590 => TemplateFieldType::layer7protocol(
+                "Layer 7 Protocol",
+                fmt_int,
+            ),
             _ => {
                 println!("Unknown fielt type: {}", field);
                 TemplateFieldType::Unimplemented("Unknown Field Type", fmt_int)
