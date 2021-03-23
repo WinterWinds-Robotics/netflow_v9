@@ -393,7 +393,7 @@ impl From<u16> for TemplateFieldType {
             ),
             130 => TemplateFieldType::ExporterIPv4Address(
                 "Exporter IPv4 Address",
-                fmt_int,
+                fmt_ipv4,
             ),
             135 => TemplateFieldType::DroppedPacketTotalCount(
                 "Dropped Packet Total Count",
