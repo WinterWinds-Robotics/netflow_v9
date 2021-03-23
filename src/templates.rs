@@ -81,6 +81,7 @@ pub enum TemplateFieldType {
     ReplicationFactor(&'static str, fn(&[u8]) -> FmtReturn),
     DroppedPacketTotalCount(&'static str, fn(&[u8]) -> FmtReturn),
     Layer7protocol(&'static str, fn(&[u8]) -> FmtReturn),
+    ExporterIPv4Address(&'static str, fn(&[u8]) -> FmtReturn),
     Unimplemented(&'static str, fn(&[u8]) -> FmtReturn),
 }
 
@@ -153,6 +154,7 @@ impl fmt::Display for TemplateFieldType {
 
             TemplateFieldType::DroppedPacketTotalCount(x, _) => x,
             TemplateFieldType::Layer7protocol(x, _) => x,
+            TemplateFieldType::ExporterIPv4Address(x, _) => x,
 
             TemplateFieldType::Unimplemented(x, _) => x,
 
@@ -212,6 +214,7 @@ impl TemplateFieldType {
 
             TemplateFieldType::DroppedPacketTotalCount(_, f) => f,
             TemplateFieldType::Layer7protocol(_, f) => f,
+            TemplateFieldType::ExporterIPv4Address(_, f) => f,
 
             TemplateFieldType::MulDstPkts(_, f) => f,
             TemplateFieldType::MulDstBytes(_, f) => f,
@@ -386,6 +389,10 @@ impl From<u16> for TemplateFieldType {
 
             99 => TemplateFieldType::ReplicationFactor(
                 "Multicast replication factor",
+                fmt_int,
+            ),
+            130 => TemplateFieldType::ExporterIPv4Address(
+                "Exporter IPv4 Address",
                 fmt_int,
             ),
             135 => TemplateFieldType::DroppedPacketTotalCount(
