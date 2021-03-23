@@ -397,7 +397,7 @@ impl From<u16> for TemplateFieldType {
                 fmt_int,
             ),
             _ => {
-                println!("Unknown fielt type: {}", field);
+                println!("Unknown field type: {}", field);
                 TemplateFieldType::Unimplemented("Unknown Field Type", fmt_int)
             }
         }
