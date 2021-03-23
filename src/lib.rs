@@ -137,6 +137,9 @@ impl Parser {
                     match tl_header.flowset_id {
                         // We have a template
                         0 => {
+                            if tl_header.length < 4 {
+                                continue;
+                            }
                             if let Ok((buffer, template_flowset)) =
                                 parse_template(data, tl_header)
                             {
@@ -300,17 +303,14 @@ fn parse_template<'a>(
                 return Err(nom::Err::Failure(()));
             }
         }
-        if byte_count == 0 {
-            // Looks like we parsed all fields so add the template if we dont have it already
-            return Ok((
-                buffer,
-                TemplateFlowset {
-                    tl_header,
-                    template_header,
-                    payload: template_fields,
-                },
-            ));
-        }
+        return Ok((
+            buffer,
+            TemplateFlowset {
+                tl_header,
+                template_header,
+                payload: template_fields,
+            },
+        ));
     }
     Err(nom::Err::Error(()))
 }
