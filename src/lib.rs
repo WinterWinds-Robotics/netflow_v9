@@ -303,6 +303,9 @@ fn parse_template<'a>(
                 return Err(nom::Err::Failure(()));
             }
         }
+        if byte_count != 0 {
+            println!("Warning: not all bytes processed in template. {:?} bytes remaining", byte_count);
+        }
         return Ok((
             buffer,
             TemplateFlowset {
