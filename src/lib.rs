@@ -7,6 +7,8 @@ mod templates;
 use serde::Serialize;
 use std::collections::HashMap;
 
+use log::{warn};
+
 #[derive(Debug)]
 struct NetflowHeader {
     version: u16,
@@ -304,7 +306,7 @@ fn parse_template<'a>(
             }
         }
         if byte_count != 0 {
-            println!("Warning: not all bytes processed in template. {:?} bytes remaining", byte_count);
+            warn!("Not all bytes processed in template. {:?} bytes remaining", byte_count);
         }
         return Ok((
             buffer,
