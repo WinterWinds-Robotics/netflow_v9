@@ -60,11 +60,11 @@ struct OptionTemplate {
 
 #[derive(Debug, Clone, Serialize)]
 pub struct DataFlowset<'a> {
-    source_ip: Option<&'a std::net::IpAddr>,
+    pub source_ip: Option<&'a std::net::IpAddr>,
     #[serde(rename = "header")]
-    tl_header: TypeLenHeader,
+    pub tl_header: TypeLenHeader,
     #[serde(with = "resolve_hashmap")]
-    records: HashMap<u16, &'a [u8]>,
+    pub records: HashMap<u16, &'a [u8]>,
 }
 
 mod resolve_hashmap {
