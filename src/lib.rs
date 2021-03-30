@@ -62,7 +62,7 @@ struct OptionTemplate {
 pub struct DataFlowset<'a> {
     pub source_ip: Option<&'a std::net::IpAddr>,
     #[serde(rename = "header")]
-    pub tl_header: TypeLenHeader,
+    tl_header: TypeLenHeader,
     #[serde(with = "resolve_hashmap")]
     pub records: HashMap<u16, &'a [u8]>,
 }
