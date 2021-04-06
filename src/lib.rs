@@ -279,10 +279,10 @@ named!(parse_option_template_header<&[u8], OptionTemplateHeader>, do_parse!(
         })
 ));
 
-fn parse_template<'a>(
-    mut buffer: &'a [u8],
+fn parse_template(
+    mut buffer: &[u8],
     tl_header: TypeLenHeader,
-) -> nom::IResult<&'a [u8], TemplateFlowset, ()> {
+) -> nom::IResult<&[u8], TemplateFlowset, ()> {
     // Adjust for TypeLenHeader size already parsed
     let mut byte_count = tl_header.length as usize - 4;
     // Keep parsed templates fields locally
@@ -320,10 +320,10 @@ fn parse_template<'a>(
     Err(nom::Err::Error(()))
 }
 
-fn parse_options_template<'a>(
-    mut buffer: &'a [u8],
+fn parse_options_template(
+    mut buffer: &[u8],
     tl_header: TypeLenHeader,
-) -> nom::IResult<&'a [u8], OptionTemplate, ()> {
+) -> nom::IResult<&[u8], OptionTemplate, ()> {
     let mut template_fields: Vec<TemplateField> = Vec::new();
     let mut byte_count = 4; //Adjust for header length
     if let Ok((bytes, template_header)) = parse_option_template_header(buffer) {
