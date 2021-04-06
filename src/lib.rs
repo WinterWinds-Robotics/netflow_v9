@@ -60,11 +60,11 @@ struct OptionTemplate {
 
 #[derive(Debug, Clone, Serialize)]
 pub struct DataFlowset<'a> {
-    pub source_ip: Option<&'a std::net::IpAddr>,
+    source_ip: Option<&'a std::net::IpAddr>,
     #[serde(rename = "header")]
     tl_header: TypeLenHeader,
     #[serde(with = "resolve_hashmap")]
-    pub records: HashMap<u16, &'a [u8]>,
+    records: HashMap<u16, &'a [u8]>,
 }
 
 mod resolve_hashmap {
@@ -72,8 +72,8 @@ mod resolve_hashmap {
     use serde::ser::{self, SerializeMap};
     use std::collections::HashMap;
 
-    pub fn serialize<'a, S>(
-        hash_map: &HashMap<u16, &'a [u8]>,
+    pub fn serialize<S>(
+        hash_map: &HashMap<u16, &[u8]>,
         serializer: S,
     ) -> Result<S::Ok, S::Error>
     where
