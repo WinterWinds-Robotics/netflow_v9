@@ -1,5 +1,6 @@
 use super::formaters::{fmt_int, fmt_ipv4, fmt_ipv6, fmt_tcp_flags, FmtReturn};
 use std::fmt;
+use crate::formaters::fmt_text;
 
 pub enum TemplateFieldType {
     InBytes(&'static str, fn(&[u8]) -> FmtReturn),
@@ -83,6 +84,14 @@ pub enum TemplateFieldType {
     Layer7protocol(&'static str, fn(&[u8]) -> FmtReturn),
     ExporterIPv4Address(&'static str, fn(&[u8]) -> FmtReturn),
     Unimplemented(&'static str, fn(&[u8]) -> FmtReturn),
+    ApplicationTag(&'static str, fn(&[u8]) -> FmtReturn),
+    FlowId(&'static str, fn(&[u8]) -> FmtReturn),
+    FlowStartMilliseconds(&'static str, fn(&[u8]) -> FmtReturn),
+    FlowEndMilliseconds(&'static str, fn(&[u8]) -> FmtReturn),
+    FlowProtoPort(&'static str, fn(&[u8]) -> FmtReturn),
+    L7ProtoName(&'static str, fn(&[u8]) -> FmtReturn),
+    L4SrcPortMap(&'static str, fn(&[u8]) -> FmtReturn),
+    L4DstPortMap(&'static str, fn(&[u8]) -> FmtReturn),
 }
 
 impl fmt::Display for TemplateFieldType {
@@ -158,6 +167,14 @@ impl fmt::Display for TemplateFieldType {
 
             TemplateFieldType::Unimplemented(x, _) => x,
 
+            TemplateFieldType::ApplicationTag(x, _) => x,
+            TemplateFieldType::FlowId(x, _) => x,
+            TemplateFieldType::FlowStartMilliseconds(x, _) => x,
+            TemplateFieldType::FlowEndMilliseconds(x, _) => x,
+            TemplateFieldType::FlowProtoPort(x, _) => x,
+            TemplateFieldType::L7ProtoName(x, _) => x,
+            TemplateFieldType::L4SrcPortMap(x, _) => x,
+            TemplateFieldType::L4DstPortMap(x, _) => x,
             _ => "Unknown value",
         };
 
@@ -243,6 +260,14 @@ impl TemplateFieldType {
             TemplateFieldType::IfDesc(_, f) => f,
 
             TemplateFieldType::Unimplemented(_, f) => f,
+            TemplateFieldType::ApplicationTag(_, f) => f,
+            TemplateFieldType::FlowId(_, f) => f,
+            TemplateFieldType::FlowStartMilliseconds(_, f) => f,
+            TemplateFieldType::FlowEndMilliseconds(_, f) => f,
+            TemplateFieldType::FlowProtoPort(_, f) => f,
+            TemplateFieldType::L7ProtoName(_, f) => f,
+            TemplateFieldType::L4SrcPortMap(_, f) => f,
+            TemplateFieldType::L4DstPortMap(_, f) => f,
 
             _ => {
                 println!("{}", *self);
@@ -402,6 +427,38 @@ impl From<u16> for TemplateFieldType {
             57590 => TemplateFieldType::Layer7protocol(
                 "Layer 7 Protocol",
                 fmt_int,
+            ),
+            95 => TemplateFieldType::ApplicationTag(
+                "Application Tag",
+                fmt_int,
+            ),
+            148 => TemplateFieldType::FlowId(
+                "Flow ID",
+                fmt_int
+            ),
+            152 => TemplateFieldType::FlowStartMilliseconds(
+                "Flow start milliseconds",
+                fmt_int
+            ),
+            153 => TemplateFieldType::FlowEndMilliseconds(
+                "Flow end milliseconds",
+                fmt_int
+            ),
+            57577 => TemplateFieldType::FlowProtoPort(
+                "L7 flow protocol port",
+                fmt_int
+            ),
+            57591 =>  TemplateFieldType::L7ProtoName(
+                "L7 protocol name",
+                fmt_text
+            ),
+            58503 => TemplateFieldType::L4SrcPortMap(
+                "L4 source port name",
+                fmt_text
+            ),
+            58507 => TemplateFieldType::L4DstPortMap(
+                "L4 destination port name",
+                fmt_text
             ),
             _ => {
                 println!("Unknown field type: {}", field);

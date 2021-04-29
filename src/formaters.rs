@@ -40,6 +40,11 @@ impl std::fmt::Display for FmtReturn {
     }
 }
 
+pub fn fmt_text(b: &[u8]) -> FmtReturn {
+    let aa: &str = unsafe { std::str::from_utf8_unchecked(&b) };
+    FmtReturn::Text(aa.to_string())
+}
+
 pub fn fmt_ipv4(b: &[u8]) -> FmtReturn {
     FmtReturn::Text(Ipv4Addr::new(b[0], b[1], b[2], b[3]).to_string())
 }
